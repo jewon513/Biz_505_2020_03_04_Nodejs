@@ -3,6 +3,17 @@ var router = express.Router();
 
 router.get("/:data/list",function(req,res){
 
+    let data = req.params.data
+    if(data == 'book'){
+        bookVO.find({},function(err,data){
+            res.json(data)
+        })
+    }else if (data == 'member'){
+        memberVO.find //////
+    }else if (data == 'address'){
+        addressVO.find //////
+    }
+
     res.end("list")
 
 })

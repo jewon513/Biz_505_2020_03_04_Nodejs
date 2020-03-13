@@ -1,6 +1,15 @@
 var express = require("express")
 var router = express.Router()
 
+// moment와 moment-timezone은 가급적 순서를 지켜서 require한다.
+// 시간 설정을 위한 dependency
+var moment = require("moment")
+// require만 해주면 moemnt 내에서 자체적으로 호출하여 사용하게 됨
+var moment_timezone = require("moment-timezone")
+
+// moment를 사용하기에 앞서서 사용할 TimeZone을 설정해준다.
+moment.tz.setDefault("Asia/Seoul")
+
 // models 폴더에 여러개의 VO가 있으면 그들을 배열로 만들어서 가져와라
 var {bbsVO} = require("../models")
 
@@ -22,8 +31,8 @@ router.get("/insert",function(req,res){
 
     let bbsVO = {
 
-        b_date : '2020-03-10',
-        b_time : '11:04:00'
+        b_date : moment().format('YYYY[-]MM[-]DD'),
+        b_time : moment().format('HH:mm:ss')
 
     }
 
@@ -37,8 +46,8 @@ router.post("/insert",function(req,res){
 
     bbsVO.create({
         b_writer : req.body.b_writer,
-        b_date : req.body.b_date,
-        b_time : req.body.b_time,
+        b_date : moment().format('YYYY[-]MM[-]DD'),
+        b_time : moment().format('HH:mm:ss'),
         b_subject : req.body.b_subject,
         b_text : req.body.b_text
     }).then(function(result){

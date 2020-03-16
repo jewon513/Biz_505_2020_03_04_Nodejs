@@ -9,7 +9,7 @@ var bookVO = mongoose.Schema({
     title : {
         type:String,        //  입력한 검색어
         required : false,
-        unique : true
+        unique : false
     },        //  도서 제목
     link : {
         type:String,        //  입력한 검색어
@@ -49,8 +49,8 @@ var bookVO = mongoose.Schema({
     isbn : {
         type:String,        //  입력한 검색어
         required : false,
-        unique : false
-    },          //  ISBN
+        unique : true
+    },          //  ISBN이 같은 도서라면 저장을 금지한다.
     description : {
         type:String,        //  입력한 검색어
         required : false,

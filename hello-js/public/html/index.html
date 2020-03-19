@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        // 첫번째 p tag가 클릭되었을때 반응할 함수
+        function myclick (){
+            alert("나는 첫번째 p tag 입니다.")
+        }
+
+        function myclick2(text){
+            alert("나는 " + text + " 입니다.")
+        }
+
+        // java코드에서는 function(text)라는 메서드를 호출하여 그 결과를 myclick3에 담아라 하는 의미인데
+        // js 코드에서는 myclick3 이라는 이름을 함수를 선언하겠다 라는 의미가 된다.
+        var myclick3 = function (text) {
+            alert(text)
+        }
+
+        var myclick4 = (text) =>{
+            alert(text)
+        }
+
+    </script>
+
+    <style>
+
+        p{
+            border : 1px solid blue;
+            padding: 10px;
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    <p onclick="myclick()">나는 p tag 입니다.</p>
+    <p onclick="myclick2('홍길동')">나는 p tag 입니다.</p>
+    <p onclick="myclick3('I LOVE MONEY')">나는 p tag 입니다.</p>
+    <p onclick="myclick4('Hello')">나는 p tag 입니다.</p>
+
+</body>
+</html>

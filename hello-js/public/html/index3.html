@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      p {
+        background-color: thistle;
+        padding: 10px;
+      }
+    </style>
+    <script>
+      var test = () => {
+        alert(this);
+      };
+
+      var test2 = function() {
+        alert(this);
+      };
+
+      var test3 = {
+        test: "이게 나와야함",
+        name: function() {
+          alert(this.test);
+        }
+      };
+
+      var test4 = {
+        test: "이게 나와야함",
+        name: () => {
+          alert(this);
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <p onclick="test()">test</p>
+    <p onclick="test2()">test</p>
+    <p onclick="test3.name()">test</p>
+    <p onclick="test4.name()">test</p>
+  </body>
+</html>

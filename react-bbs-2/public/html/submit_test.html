@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script>
+      $(function() {
+        $("#a1").click(function() {
+          alert("배고프다");
+          return false;
+        });
+        $("#a2").click(function() {
+          alert("나는 배가 고픕니다.");
+        });
+
+        $("#form1").submit(function() {
+          alert("데이터가 보내지기전 ");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!--
+        form 기본 이벤트에는 submit 속성이 있다. form 내부에 있는 button을 클릭하거나
+        input box가 1개만 있을때 enter를 입력하게 되면 자동으로 form에 설정된 action으로 submit 된다.
+      -->
+    <form id="form1">
+      <input placeholder="문자열 입력" name="string" />
+      <button>Click</button>
+    </form>
+    <a href="http://www.google.com" id="a1">Click Me</a>
+    <a href="#" id="a2">Click Me</a>
+  </body>
+</html>

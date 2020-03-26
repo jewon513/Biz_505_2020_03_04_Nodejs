@@ -5,7 +5,12 @@ class BucketList extends Component {
   render() {
     const { bucketList } = this.props;
     const list = bucketList.map(bucket => (
-      <BucketItem ket={bucket.id} bucketItem={bucket} />
+      <BucketItem
+        key={bucket.id}
+        bucketItem={bucket}
+        bucket_update={this.props.bucket_update}
+        changeFlag={this.props.changeFlag}
+      />
     ));
 
     return (
@@ -17,7 +22,7 @@ class BucketList extends Component {
               <th>추가일자</th>
               <th>BUCKET</th>
               <th>완료</th>
-              <th>비고</th>
+              <th>취소</th>
             </tr>
           </thead>
           <tbody>{list}</tbody>

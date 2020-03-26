@@ -9,7 +9,8 @@ class BucketMain extends Component {
     bucketList: [
       {
         id: 0,
-        b_flag: "☆",
+        b_flag: "0",
+        b_flag_text: "☆",
         b_start_date: "2020-03-26",
         b_end_date: "",
         b_title: "리액트 정복",
@@ -17,6 +18,44 @@ class BucketMain extends Component {
         b_cancel: false
       }
     ]
+  };
+
+  componentDidMount() {
+    const strBucketList = localStorage.bucketList;
+    if (strBucketList) {
+      this.setState({
+        bucketList: JSON.parse(strBucketList)
+      });
+      this.id = this.state.bucketList.length;
+    }
+  }
+
+  componentDidUpdate(preProps, preState) {
+    // 객체를 통체로 json 문자열로 변경
+    const preString = JSON.stringify(preState.bucketList);
+    const thisString = JSON.stringify(this.state.bucketList);
+
+    // web 브라우저에 내장 DB에 문자열 저장 이때 key : bucketList
+    if (preString !== thisString) {
+      localStorage.bucketList = thisString;
+    }
+  }
+
+  changeFlag = id => {
+    const b_flag = ["☆", "★", "○", "●"];
+
+    this.setState({
+      bucketList: this.state.bucketList.map(bucket => {
+        if (bucket.id === id) {
+          let flag = ++bucket.b_flag % 4;
+          let flagText = b_flag[flag];
+
+          return { ...bucket, b_flag_text: flagText, b_flag: flag };
+        } else {
+          return bucket;
+        }
+      })
+    });
   };
 
   // bucketList에 항목을 추가하여 전체 컴포넌트에 전파될 수 있도록 함수를 선언
@@ -35,14 +74,29 @@ class BucketMain extends Component {
     // b_id 값은 버킷 리스트의 PK 값을 갖는 칼럼으로 state에 지정된 id 값을 1 증가시키므로서 생성을 하고
     // 리스트의 컬럼을 해당 값으로 지정
     const bucket = {
-      b_id: ++this.id,
-      b_flag: "☆",
+      b_flag: "0",
+      b_flag_text: "☆",
       b_start_date: date.toString(),
-      b_title: b_title
+      b_title: b_title,
+      b_end_check: false,
+      b_cancel: false,
+      b_end_date: ""
     };
 
     this.setState({
-      bucketList: bucketList.concat({ id: this.id, ...bucket })
+      bucketList: bucketList.concat({ id: ++this.id, ...bucket })
+    });
+  };
+
+  // bucketList를 map으로 반복 실행하면서 각요소의 id값과 매개변수로 받은 id 값이 일치하면
+  // b_title만 새로운 값으로 변경하여 리턴하라
+  bucket_update = (id, b_title) => {
+    const { bucketList } = this.state;
+
+    this.setState({
+      bucketList: bucketList.map(bucket =>
+        bucket.id === id ? { ...bucket, b_title: b_title } : bucket
+      )
     });
   };
 
@@ -58,7 +112,11 @@ class BucketMain extends Component {
     return (
       <div>
         <BucketInsert bucket_add={this.bucket_add} />
-        <BucketList bucketList={this.state.bucketList} />
+        <BucketList
+          bucketList={this.state.bucketList}
+          bucket_update={this.bucket_update}
+          changeFlag={this.changeFlag}
+        />
       </div>
     );
   }

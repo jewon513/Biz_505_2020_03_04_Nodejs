@@ -1,10 +1,15 @@
 import React, { Component } from "react";
+import Context from "../provider/BucketProvider";
 
 class BucketInsert extends Component {
   // input box를 사용하는 component에서 사용자가 입력한 문자열을 임시로 담고 있을 변수 선언
   state = {
     bucket_title: ""
   };
+
+  // 이 컴포넌트에서 상위 컴포넌트에서 제공한 Provider를 사용하여 state 변수와 handler method들을 사용하겠다.
+  // 내부에서 this.context 라는 변수가 생성이 된다.
+  static contextType = Context;
 
   // 현재 컴포넌트에 선언된 state.bucket_title 변수에 사용자의 입력 문자열을 담는 역할을 수행한다
   // 그러나 여기에 문자열을 담는다고 하여도 다른 컴포넌트에 문자열이 전파되지는 않는다.
@@ -18,7 +23,7 @@ class BucketInsert extends Component {
   // bucketMain에서 전달받은 이벤트 핸들러에게 state.bucket_title 변수값을 전달하여
   // 전체 컴포넌트가 바라보고 있는 배열에 추가하도록 수행을 하자
   handleOnKeyPress = event => {
-    const { bucket_add } = this.props;
+    const { bucket_add } = this.context;
     const { bucket_title } = this.state;
 
     if (event.key === "Enter") {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import BucketInsert from "./BucketInsert";
 import BucketList from "./BucketList";
+import Context from "../provider/BucketProvider";
 
 class BucketMain extends Component {
   id = 0;
@@ -17,7 +18,12 @@ class BucketMain extends Component {
         b_end_check: false,
         b_cancel: false
       }
-    ]
+    ],
+    changeFlag: id => this.changeFlag(id),
+    bucket_add: b_title => this.bucket_add(b_title),
+    bucket_update: (id, b_title) => this.bucket_update(id, b_title),
+    bucket_complet: (id, b_end_date) => this.bucket_complet(id, b_end_date),
+    toggleCancel: id => this.toggleCancel(id)
   };
 
   componentDidMount() {
@@ -101,6 +107,41 @@ class BucketMain extends Component {
     });
   };
 
+  // 완료선택이 이루어 지면 bucketList를 map으로 반복하면서
+  // id 값과 일치하는 항목을 찾고
+  // 있으면 해당 항목을 변경하는 작업을 수행
+  bucket_complet = (id, b_end_date) => {
+    const { bucketList } = this.state;
+
+    this.setState({
+      bucketList: bucketList.map(bucket => {
+        // id값과 일치하는 리스트가 있는가
+        if (bucket.id === id) {
+          const date = new Date();
+          // 현재 항목의 b_end_Date 값이 없는가? 없다면 date를 입력하라
+          const end_date = bucket.b_end_date === "" ? date : "";
+          return { ...bucket, b_end_date: end_date };
+        } else {
+          return bucket;
+        }
+      })
+    });
+  };
+
+  toggleCancel = id => {
+    const { bucketList } = this.state;
+
+    this.setState({
+      bucketList: bucketList.map(bucket => {
+        if (bucket.id === id) {
+          return { ...bucket, b_cancel: !bucket.b_cancel };
+        } else {
+          return bucket;
+        }
+      })
+    });
+  };
+
   // react lifeCycle 메서드
   // this.state 추가되기 전
   // nextState 추가 된 후
@@ -112,12 +153,10 @@ class BucketMain extends Component {
   render() {
     return (
       <div>
-        <BucketInsert bucket_add={this.bucket_add} />
-        <BucketList
-          bucketList={this.state.bucketList}
-          bucket_update={this.bucket_update}
-          changeFlag={this.changeFlag}
-        />
+        <Context.Provider value={this.state}>
+          <BucketInsert />
+          <BucketList />
+        </Context.Provider>
       </div>
     );
   }
